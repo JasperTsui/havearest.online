@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Window</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #000;
+            color: white;
+            overflow: hidden;
+        }
+        
+        .game-header {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            position: relative;
+            z-index: 1000;
+        }
+        
+        .game-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .game-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .control-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.2s;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .info-btn {
+            background: #007AFF;
+        }
+        
+        .info-btn:hover {
+            background: #0056CC;
+        }
+        
+        .close-btn {
+            background: #ff3b30;
+        }
+        
+        .close-btn:hover {
+            background: #ff1f0f;
+        }
+        
+        .game-info-panel {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 350px;
+            max-height: calc(100vh - 50px);
+            background: rgba(0, 0, 0, 0.95);
+            border-left: 1px solid #333;
+            padding: 20px;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 999;
+            overflow-y: auto;
+        }
+        
+        .game-info-panel.active {
+            transform: translateX(0);
+        }
+        
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .info-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .close-info {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #007AFF;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .section-content {
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+        
+        .controls-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .controls-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .controls-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .key {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .features-list li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .features-list li:before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+        }
+        
+        .objectives-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .objectives-list li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .objectives-list li:before {
+            content: "🎯";
+            position: absolute;
+            left: 0;
+        }
+        
+        .game-container {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 50px);
+        }
+        
+        .game-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+        
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #007AFF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background: rgba(255, 59, 48, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .game-info-panel {
+                width: 100%;
+                top: 50px;
+                left: 0;
+                transform: translateY(100%);
+            }
+            
+            .game-info-panel.active {
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-header">
+        <div class="game-title" id="gameTitle">Loading...</div>
+        <div class="game-controls">
+            <button class="control-btn info-btn" onclick="toggleInfo()">ℹ️ Info</button>
+            <button class="control-btn" onclick="reloadGame()">🔄 Reload</button>
+            <button class="control-btn" onclick="toggleFullscreen()">🔍 Fullscreen</button>
+            <button class="control-btn close-btn" onclick="closeGame()">✕ Close</button>
+        </div>
+    </div>
+    
+    <div class="game-info-panel" id="gameInfoPanel">
+        <div class="info-header">
+            <h2 class="info-title" id="infoTitle">Game Information</h2>
+            <button class="close-info" onclick="toggleInfo()">×</button>
+        </div>
+        
+        <div class="game-description" id="gameDescription">
+            <div class="section-title">About</div>
+            <div class="section-content" id="aboutContent">Loading game information...</div>
+            
+            <div class="section-title">Key Features</div>
+            <ul class="features-list" id="featuresList">
+                <li>Loading...</li>
+            </ul>
+            
+            <div class="section-title">How to Play</div>
+            <div class="section-content" id="howToPlayContent">Loading instructions...</div>
+            
+            <div class="section-title">Controls</div>
+            <ul class="controls-list" id="controlsList">
+                <li><span>Loading...</span><span class="key">...</span></li>
+            </ul>
+            
+            <div class="section-title">Objectives</div>
+            <ul class="objectives-list" id="objectivesList">
+                <li>Loading objectives...</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="game-container">
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner"></div>
+            <p>Loading game...</p>
+            <p style="font-size: 12px; opacity: 0.7; margin-top: 10px;">Game will enter fullscreen automatically</p>
+        </div>
+        
+        <iframe id="gameIframe" class="game-iframe" src="" 
+                onload="onGameLoad()" 
+                onerror="onGameError()">
+        </iframe>
+        
+            <div class="error-message" id="errorMessage">
+            <h3>⚠️ Game Loading Failed</h3>
+            <p>Game file may not exist or an error occurred</p>
+            <button class="control-btn" onclick="reloadGame()" style="margin-top: 10px;">Retry</button>
+        </div>
+    </div>
+
+    <script>
+        const gameConfig = {
+            '2048': {
+                title: '2048 - Number Puzzle Master',
+                about: 'The legendary sliding number puzzle that became a global phenomenon. Created by Gabriele Cirulli, 2048 challenges players to combine tiles with the same numbers to reach the elusive 2048 tile. This deceptively simple game requires strategic thinking and planning ahead to achieve high scores.',
+                features: [
+                    'Smooth tile animations and satisfying merging effects',
+                    'Local high score tracking and achievement system',
+                    'Unlimited gameplay with infinite score potential',
+                    'Responsive design optimized for all devices',
+                    'Clean, minimalist interface focusing on gameplay'
+                ],
+                howToPlay: 'Use arrow keys to slide all tiles in one direction. When two tiles with the same number touch, they merge into one tile with double the value. The goal is to create a tile with the number 2048, but you can continue playing to achieve even higher scores. The game ends when no more moves are possible.',
+                controls: [
+                    ['Move tiles', '↑↓←→ Arrow Keys'],
+                    ['New game', 'R Key'],
+                    ['Undo move', 'Z Key']
+                ],
+                objectives: [
+                    'Reach the 2048 tile to win the basic game',
+                    'Continue beyond 2048 to achieve the highest possible score',
+                    'Master advanced strategies like corner strategy and tile positioning',
+                    'Complete the game with minimal moves for efficiency challenges'
+                ]
+            },
+            'flappy-bird': {
+                title: 'Flappy Bird - The Viral Sensation',
+                about: 'The legendary arcade game that took the world by storm in 2014. Guide a bird through a series of pipes by tapping to make it fly. This seemingly simple game requires precise timing and quick reflexes, making it both addictive and challenging. Originally created by Dong Nguyen, it became famous for its difficulty and minimalist design.',
+                features: [
+                    'Physics-based flight mechanics with realistic gravity',
+                    'Procedurally generated pipe obstacles for endless gameplay',
+                    'Pixel-perfect collision detection for fair gameplay',
+                    'Retro 8-bit style graphics and sound effects',
+                    'Global leaderboard integration for competitive play'
+                ],
+                howToPlay: 'Click anywhere on the screen or press the spacebar to make the bird flap its wings and fly upward. The bird will naturally fall due to gravity, so you must time your taps carefully to navigate through the gaps between pipes. Each successful passage through pipes earns you one point. The game ends if the bird touches a pipe or the ground.',
+                controls: [
+                    ['Flap wings', 'Click/Tap or Spacebar'],
+                    ['Start game', 'Click/Tap or Spacebar'],
+                    ['Restart', 'R Key or Click Restart']
+                ],
+                objectives: [
+                    'Navigate through as many pipe pairs as possible',
+                    'Beat your personal best score consistently',
+                    'Master the timing to achieve smooth, controlled flight',
+                    'Reach milestone scores: 10, 25, 50, and 100+ points'
+                ]
+            },
+            'tetris': {
+                title: 'Tetris - The Timeless Puzzle Classic',
+                about: 'The most influential puzzle game ever created, originally designed by Alexey Pajitnov in 1984. Tetris challenges players to arrange falling geometric shapes called Tetrominoes to create complete horizontal lines. With its perfect blend of simplicity and depth, Tetris has captivated players across generations and remains one of the most popular games of all time.',
+                features: [
+                    'Seven distinct Tetromino pieces with unique rotation patterns',
+                    'Progressive difficulty with increasing speed levels',
+                    'Line clearing mechanics with score multipliers',
+                    'Next piece preview for strategic planning',
+                    'Classic Tetris scoring system and level progression'
+                ],
+                howToPlay: 'Tetrominoes fall from the top of the playing field. Use the arrow keys to move pieces left or right, rotate them, and drop them faster. When a horizontal line is completely filled with blocks, it disappears and you earn points. The game becomes progressively faster as you clear more lines. The objective is to prevent the pieces from stacking up to the top of the playing field.',
+                controls: [
+                    ['Move left/right', '← → Arrow Keys'],
+                    ['Rotate piece', '↑ Arrow Key'],
+                    ['Soft drop', '↓ Arrow Key'],
+                    ['Hard drop', 'Spacebar'],
+                    ['Pause', 'P Key']
+                ],
+                objectives: [
+                    'Clear horizontal lines by filling them completely with blocks',
+                    'Survive as long as possible while the speed increases',
+                    'Achieve Tetris (clearing 4 lines simultaneously) for maximum points',
+                    'Master advanced techniques like T-spins and perfect clears'
+                ]
+            },
+            'snake': {
+                title: 'Snake - The Arcade Legend',
+                about: 'The iconic arcade game that defined early mobile gaming. Control a growing snake as it moves around the screen, eating food and avoiding collisions. Originally popularized on Nokia phones, Snake is a perfect example of how simple mechanics can create endlessly engaging gameplay. The challenge lies in managing the ever-growing length of your snake.',
+                features: [
+                    'Smooth snake movement with responsive controls',
+                    'Randomly generated food placement for unpredictable gameplay',
+                    'Growing difficulty as the snake becomes longer',
+                    'Score tracking with bonus points for consecutive food collection',
+                    'Classic retro styling with modern performance optimization'
+                ],
+                howToPlay: 'Use the arrow keys to control the direction of the snake. The snake moves continuously in the direction you choose. Eat the food items that appear randomly on the screen to grow longer and increase your score. Avoid running into the walls or the snake\'s own body, as this will end the game. The challenge increases as your snake grows longer and becomes harder to maneuver.',
+                controls: [
+                    ['Change direction', '↑↓←→ Arrow Keys'],
+                    ['Pause game', 'P Key or Spacebar'],
+                    ['Restart', 'R Key'],
+                    ['Speed boost', 'Hold Shift (if enabled)']
+                ],
+                objectives: [
+                    'Eat as much food as possible to grow the snake',
+                    'Achieve the highest score without colliding with walls or yourself',
+                    'Master tight turns and strategic positioning',
+                    'Complete challenge modes like filling the entire screen'
+                ]
+            },
+            'asteroids': {
+                title: 'Asteroids - Classic Space Shooter',
+                about: 'The legendary space combat game that pioneered the "shoot \'em up" genre. Originally created by Atari in 1979, Asteroids puts you in control of a spaceship navigating through an asteroid field. With its vector graphics style and physics-based movement, this game offers a unique blend of action and strategy that has influenced countless games over the decades.',
+                features: [
+                    'Authentic vector-style graphics with smooth animations',
+                    'Realistic space physics with momentum and inertia',
+                    'Multi-stage asteroid destruction mechanics',
+                    'UFO encounters with intelligent enemy AI',
+                    'Hyperspace escape mechanism for emergency situations'
+                ],
+                howToPlay: 'Pilot your spaceship through dangerous asteroid fields. Use the left and right arrow keys to rotate your ship, and the up arrow to thrust forward. Press the spacebar to fire bullets at asteroids and UFOs. Large asteroids break into smaller pieces when shot, and small asteroids are completely destroyed. Beware of UFOs that occasionally appear and fire back at you!',
+                controls: [
+                    ['Rotate ship', '← → Arrow Keys'],
+                    ['Thrust forward', '↑ Arrow Key'],
+                    ['Fire weapons', 'Spacebar'],
+                    ['Hyperspace jump', '↓ Arrow Key'],
+                    ['Pause', 'P Key']
+                ],
+                objectives: [
+                    'Destroy all asteroids in each wave to progress',
+                    'Survive UFO attacks and destroy them for bonus points',
+                    'Master momentum-based movement for precise control',
+                    'Achieve high scores through skilled play and survival'
+                ]
+            }
+        };
+        
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        
+        function initGame() {
+            const gameName = getUrlParameter('game');
+            if (!gameName) {
+                showError('No game specified');
+                return;
+            }
+            
+            const config = gameConfig[gameName];
+            if (!config) {
+                showError('Unknown game: ' + gameName);
+                return;
+            }
+            
+            document.getElementById('gameTitle').textContent = config.title;
+            document.title = config.title;
+            
+            populateGameInfo(config);
+            loadGame(gameName);
+        }
+        
+        function populateGameInfo(config) {
+            document.getElementById('infoTitle').textContent = config.title;
+            document.getElementById('aboutContent').textContent = config.about;
+            document.getElementById('howToPlayContent').textContent = config.howToPlay;
+            
+            const featuresList = document.getElementById('featuresList');
+            featuresList.innerHTML = '';
+            config.features.forEach(feature => {
+                const li = document.createElement('li');
+                li.textContent = feature;
+                featuresList.appendChild(li);
+            });
+            
+            const controlsList = document.getElementById('controlsList');
+            controlsList.innerHTML = '';
+            config.controls.forEach(([action, key]) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${action}</span><span class="key">${key}</span>`;
+                controlsList.appendChild(li);
+            });
+            
+            const objectivesList = document.getElementById('objectivesList');
+            objectivesList.innerHTML = '';
+            config.objectives.forEach(objective => {
+                const li = document.createElement('li');
+                li.textContent = objective;
+                objectivesList.appendChild(li);
+            });
+        }
+        
+        function toggleInfo() {
+            const panel = document.getElementById('gameInfoPanel');
+            panel.classList.toggle('active');
+        }
+        
+        function loadGame(gameName) {
+            const iframe = document.getElementById('gameIframe');
+            const gameUrl = `games/${gameName}/index.html`;
+            
+            showLoading();
+            iframe.src = gameUrl;
+            
+            setTimeout(() => {
+                if (document.getElementById('loadingOverlay').style.display !== 'none') {
+                    showError('Game loading timeout');
+                }
+            }, 10000);
+        }
+        
+        function onGameLoad() {
+            hideLoading();
+            // Auto-enter fullscreen when game loads
+            setTimeout(() => {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => {
+                        console.log('Fullscreen request failed:', err);
+                        // If fullscreen fails, maximize the window
+                        window.moveTo(0, 0);
+                        window.resizeTo(screen.width, screen.height);
+                    });
+                }
+            }, 100);
+        }
+        
+        function onGameError() {
+            hideLoading();
+            showError('Failed to load game file');
+        }
+        
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+        
+        function showError(message) {
+            hideLoading();
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.querySelector('p').textContent = message;
+            errorDiv.style.display = 'block';
+        }
+        
+        function reloadGame() {
+            const gameName = getUrlParameter('game');
+            if (gameName) {
+                loadGame(gameName);
+            }
+        }
+        
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        function closeGame() {
+            if (window.opener) {
+                window.close();
+            } else {
+                history.back();
+            }
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                } else if (document.getElementById('gameInfoPanel').classList.contains('active')) {
+                    toggleInfo();
+                    } else {
+                        closeGame();
+                    }
+            } else if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
+                e.preventDefault();
+                reloadGame();
+            } else if (e.key === 'F11') {
+                    e.preventDefault();
+                    toggleFullscreen();
+            } else if (e.key === 'i' || e.key === 'I') {
+                toggleInfo();
+            }
+        });
+        
+        document.addEventListener('click', function(e) {
+            const panel = document.getElementById('gameInfoPanel');
+            const infoBtn = e.target.closest('.info-btn');
+            const panelContent = e.target.closest('.game-info-panel');
+            
+            if (panel.classList.contains('active') && !infoBtn && !panelContent) {
+                toggleInfo();
+            }
+        });
+        
+        initGame();
+    </script>
+</body>
+</html> 

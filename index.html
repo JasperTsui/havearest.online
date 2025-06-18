@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Classic HTML5 Games Collection - Features 2048, Snake, Tetris, Flappy Bird and more popular games">
+    <meta name="keywords" content="HTML5 games,2048,Snake,Tetris,Flappy Bird,online games,free games">
+    <meta name="author" content="Game Portal">
+    <meta property="og:title" content="🎮 Classic HTML5 Games Collection">
+    <meta property="og:description" content="Curated classic HTML5 games, play instantly in your browser">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/images/logo.png">
+    
+    <title>🎮 Classic HTML5 Games - Free Online Game Portal</title>
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#007AFF">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Game Portal">
+    <link rel="apple-touch-icon" href="assets/images/favicon.ico">
+    
+    <!-- Inline styles to prevent flashing and ensure basic styling -->
+    <style>
+        html { visibility: visible !important; opacity: 1 !important; }
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F2F2F7; }
+        * { transition: none !important; animation: none !important; box-sizing: border-box; }
+        
+        /* Basic header styles */
+        .main-header { 
+            background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%); 
+            color: white; 
+            text-align: center; 
+            padding: 3rem 2rem; 
+        }
+        .main-header h1 { font-size: 3rem; margin-bottom: 1rem; }
+        .subtitle { font-size: 1.2rem; opacity: 0.8; }
+        
+        /* Basic layout */
+        .main-content { max-width: 1200px; margin: 0 auto; padding: 0 2rem 4rem; }
+        .search-container, .filter-container { display: flex; justify-content: center; margin-bottom: 2rem; gap: 0.5rem; }
+        .search-input, .filter-btn { padding: 12px 16px; border-radius: 10px; border: 1px solid #D1D1D6; }
+        .filter-btn.active { background: #007AFF; color: white; }
+        
+        /* Game grid */
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .game-card { 
+            background: white; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12); 
+            transition: transform 0.2s;
+        }
+        .game-card:hover { transform: translateY(-2px); }
+        .game-image { width: 100%; height: 200px; object-fit: cover; }
+        .game-info { padding: 1.5rem; }
+        .game-title { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .game-description { color: #666; margin-bottom: 1rem; }
+        .play-btn { 
+            background: #007AFF; 
+            color: white; 
+            border: none; 
+            padding: 12px 24px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            width: 100%;
+        }
+        .play-btn:hover { background: #0056CC; }
+    </style>
+    
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body>
+    <!-- Loading overlay - temporarily disabled -->
+    <!-- <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Loading games...</p>
+    </div> -->
+
+    <header class="main-header">
+        <div class="header-content">
+                    <h1>🎮 Classic HTML5 Games</h1>
+        <p class="subtitle">Premium collection of timeless arcade classics, play instantly in your browser</p>
+            
+            <!-- Global settings - temporarily removed -->
+            <!-- <div class="global-controls">
+                <button id="sound-toggle" class="control-btn" title="Sound toggle">
+                    <span id="sound-icon">🔊</span>
+                </button>
+            </div> -->
+        </div>
+    </header>
+    
+    <main class="main-content">
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" id="game-search" placeholder="Search games..." class="search-input">
+            <button class="search-btn">🔍</button>
+        </div>
+
+        <!-- Game Categories -->
+        <div class="filter-container">
+            <button class="filter-btn active" data-category="all">All Games</button>
+            <button class="filter-btn" data-category="puzzle">Puzzle</button>
+            <button class="filter-btn" data-category="action">Action</button>
+            <button class="filter-btn" data-category="arcade">Arcade</button>
+        </div>
+        
+        <!-- Game Grid -->
+        <div class="game-grid" id="game-grid">
+            <div class="game-card" data-game="2048" data-category="puzzle">
+                <div class="game-image-container">
+                    <img src="assets/images/2048-preview.svg" alt="2048 Game Preview" class="game-image" 
+                         loading="lazy">
+                    <div class="game-overlay">
+                        <div class="game-controls">
+                            <span class="control-hint">Arrow keys to slide</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <h3 class="game-title">2048</h3>
+                    <p class="game-description">The legendary number puzzle that captivated millions worldwide</p>
+                    <div class="game-rating">
+                        <span class="stars">⭐⭐⭐⭐⭐</span>
+                        <span class="rating-text">(4.8/5)</span>
+                    </div>
+                    <button class="play-btn" data-game="2048">
+                        <span class="btn-text">Play Now</span>
+                        <span class="btn-loading" style="display: none;">Loading...</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="game-card" data-game="flappy-bird" data-category="action">
+                <div class="game-image-container">
+                    <img src="assets/images/flappy-preview.svg" alt="Flappy Bird Game Preview" class="game-image"
+                         loading="lazy">
+                    <div class="game-overlay">
+                        <div class="game-controls">
+                            <span class="control-hint">Click or spacebar to fly</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <h3 class="game-title">Flappy Bird</h3>
+                    <p class="game-description">The viral sensation that defined mobile gaming simplicity</p>
+                    <div class="game-rating">
+                        <span class="stars">⭐⭐⭐⭐</span>
+                        <span class="rating-text">(4.2/5)</span>
+                    </div>
+                    <button class="play-btn" data-game="flappy-bird">
+                        <span class="btn-text">Play Now</span>
+                        <span class="btn-loading" style="display: none;">Loading...</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="game-card" data-game="tetris" data-category="puzzle">
+                <div class="game-image-container">
+                    <img src="assets/images/tetris-preview.svg" alt="Tetris Game Preview" class="game-image"
+                         loading="lazy">
+                    <div class="game-overlay">
+                        <div class="game-controls">
+                            <span class="control-hint">Arrow keys to move & rotate</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <h3 class="game-title">Tetris</h3>
+                    <p class="game-description">The timeless puzzle that revolutionized gaming forever</p>
+                    <div class="game-rating">
+                        <span class="stars">⭐⭐⭐⭐⭐</span>
+                        <span class="rating-text">(4.9/5)</span>
+                    </div>
+                    <button class="play-btn" data-game="tetris">
+                        <span class="btn-text">Play Now</span>
+                        <span class="btn-loading" style="display: none;">Loading...</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="game-card" data-game="snake" data-category="arcade">
+                <div class="game-image-container">
+                    <img src="assets/images/snake-preview.svg" alt="Snake Game Preview" class="game-image"
+                         loading="lazy">
+                    <div class="game-overlay">
+                        <div class="game-controls">
+                            <span class="control-hint">Arrow keys to navigate</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <h3 class="game-title">Snake</h3>
+                    <p class="game-description">The beloved arcade classic that started it all</p>
+                    <div class="game-rating">
+                        <span class="stars">⭐⭐⭐⭐</span>
+                        <span class="rating-text">(4.5/5)</span>
+                    </div>
+                    <button class="play-btn" data-game="snake">
+                        <span class="btn-text">Play Now</span>
+                        <span class="btn-loading" style="display: none;">Loading...</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="game-card" data-game="asteroids" data-category="action">
+                <div class="game-image-container">
+                    <img src="assets/images/asteroids-preview.svg" alt="Asteroids Game Preview" class="game-image"
+                         loading="lazy">
+                    <div class="game-overlay">
+                        <div class="game-controls">
+                            <span class="control-hint">Arrow keys & spacebar to shoot</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <h3 class="game-title">Asteroids</h3>
+                    <p class="game-description">The iconic space shooter that defined an era</p>
+                    <div class="game-rating">
+                        <span class="stars">⭐⭐⭐⭐</span>
+                        <span class="rating-text">(4.3/5)</span>
+                    </div>
+                    <button class="play-btn" data-game="asteroids">
+                        <span class="btn-text">Play Now</span>
+                        <span class="btn-loading" style="display: none;">Loading...</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Empty State -->
+        <div id="no-results" class="no-results" style="display: none;">
+            <div class="no-results-icon">🎮</div>
+            <h3>No games found</h3>
+            <p>Try different keywords or select another category</p>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p>&copy; 2024 Classic HTML5 Games. Delivering premium browser gaming experiences.</p>
+            <div class="footer-links">
+                <a href="#" class="footer-link">About</a>
+                <a href="#" class="footer-link">Contact</a>
+                <a href="#" class="footer-link">Privacy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Error Modal -->
+    <div id="error-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚠️ Game Loading Failed</h3>
+                <button class="modal-close" onclick="closeErrorModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="error-message">Game temporarily unavailable, please try again later.</p>
+                <div class="modal-actions">
+                    <button class="retry-btn" onclick="retryGame()">Retry</button>
+                    <button class="cancel-btn" onclick="closeErrorModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html> 

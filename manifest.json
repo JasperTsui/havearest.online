@@ -1,0 +1,76 @@
+{
+  "name": "Classic HTML5 Games Collection",
+  "short_name": "Game Portal",
+  "description": "Curated classic HTML5 games, play instantly in your browser",
+  "start_url": "https://havearest.online/",
+  "display": "standalone",
+      "background_color": "#007AFF",
+    "theme_color": "#007AFF",
+  "orientation": "any",
+  "scope": "https://havearest.online/",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "assets/images/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/default-game.png",
+      "sizes": "320x220",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["games", "entertainment"],
+  "screenshots": [
+    {
+      "src": "assets/images/2048-preview.png",
+      "sizes": "320x220",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "2048",
+      "short_name": "2048",
+             "description": "Number puzzle game",
+      "url": "/game-frame.html?game=2048",
+      "icons": [
+        {
+          "src": "assets/images/2048-preview.png",
+          "sizes": "320x220",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+         {
+       "name": "Snake",
+       "short_name": "Snake",
+       "description": "Classic arcade game",
+      "url": "/game-frame.html?game=snake",
+      "icons": [
+        {
+          "src": "assets/images/snake-preview.png",
+          "sizes": "320x220",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+         {
+       "name": "Tetris",
+       "short_name": "Tetris",
+       "description": "Classic block puzzle game",
+      "url": "/game-frame.html?game=tetris",
+      "icons": [
+        {
+          "src": "assets/images/tetris-preview.png",
+          "sizes": "320x220",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
+} 

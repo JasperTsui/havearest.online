@@ -1,0 +1,58 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="space" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Space Background -->
+  <rect width="400" height="300" fill="url(#space)"/>
+  
+  <!-- Stars -->
+  <circle cx="50" cy="50" r="1" fill="white"/>
+  <circle cx="120" cy="30" r="1.5" fill="white"/>
+  <circle cx="200" cy="40" r="1" fill="white"/>
+  <circle cx="300" cy="60" r="1" fill="white"/>
+  <circle cx="350" cy="80" r="1.5" fill="white"/>
+  <circle cx="80" cy="100" r="1" fill="white"/>
+  <circle cx="250" cy="90" r="1" fill="white"/>
+  <circle cx="380" cy="120" r="1" fill="white"/>
+  <circle cx="30" cy="150" r="1.5" fill="white"/>
+  <circle cx="150" cy="180" r="1" fill="white"/>
+  <circle cx="320" cy="200" r="1" fill="white"/>
+  <circle cx="100" cy="220" r="1" fill="white"/>
+  <circle cx="280" cy="250" r="1.5" fill="white"/>
+  <circle cx="60" cy="270" r="1" fill="white"/>
+  <circle cx="370" cy="280" r="1" fill="white"/>
+  
+  <!-- Asteroids -->
+  <polygon points="300,100 320,90 340,100 350,120 340,140 320,150 300,140 290,120" fill="#8B4513" stroke="#A0522D" stroke-width="2"/>
+  <polygon points="80,200 100,190 120,200 130,220 120,240 100,250 80,240 70,220" fill="#696969" stroke="#808080" stroke-width="2"/>
+  <polygon points="350,180 365,170 380,180 385,195 380,210 365,220 350,210 345,195" fill="#8B4513" stroke="#A0522D" stroke-width="2"/>
+  
+  <!-- Spaceship -->
+  <g transform="translate(200,150) rotate(0)">
+    <!-- Ship body -->
+    <polygon points="0,-15 -8,10 0,5 8,10" fill="#C0C0C0" stroke="#FFF" stroke-width="1"/>
+    <!-- Engine glow -->
+    <polygon points="-6,10 0,20 6,10" fill="#FF4500" opacity="0.8"/>
+    <polygon points="-4,10 0,16 4,10" fill="#FFD700" opacity="0.9"/>
+  </g>
+  
+  <!-- Bullets -->
+  <circle cx="180" cy="120" r="2" fill="#00FF00"/>
+  <circle cx="220" cy="110" r="2" fill="#00FF00"/>
+  
+  <!-- Score and Lives -->
+  <text x="20" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFF">SCORE: 1250</text>
+  <text x="20" y="45" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFF">LIVES: 3</text>
+  
+  <!-- Small ship icons for lives -->
+  <polygon points="120,35 115,42 120,40 125,42" fill="#C0C0C0"/>
+  <polygon points="135,35 130,42 135,40 140,42" fill="#C0C0C0"/>
+  <polygon points="150,35 145,42 150,40 155,42" fill="#C0C0C0"/>
+  
+  <!-- Title -->
+  <text x="200" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FFF">ASTEROIDS</text>
+</svg> 

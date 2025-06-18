@@ -1,0 +1,51 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#faf8ef;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f2b179;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="url(#bg)"/>
+  
+  <!-- Game Board -->
+  <rect x="50" y="50" width="300" height="200" rx="10" fill="#bbada0"/>
+  
+  <!-- Tiles -->
+  <rect x="65" y="65" width="60" height="40" rx="5" fill="#eee4da"/>
+  <text x="95" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#776e65">2</text>
+  
+  <rect x="135" y="65" width="60" height="40" rx="5" fill="#ede0c8"/>
+  <text x="165" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#776e65">4</text>
+  
+  <rect x="205" y="65" width="60" height="40" rx="5" fill="#f2b179"/>
+  <text x="235" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#f9f6f2">8</text>
+  
+  <rect x="275" y="65" width="60" height="40" rx="5" fill="#f59563"/>
+  <text x="305" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#f9f6f2">16</text>
+  
+  <rect x="65" y="115" width="60" height="40" rx="5" fill="#f67c5f"/>
+  <text x="95" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#f9f6f2">32</text>
+  
+  <rect x="135" y="115" width="60" height="40" rx="5" fill="#f65e3b"/>
+  <text x="165" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#f9f6f2">64</text>
+  
+  <rect x="205" y="115" width="60" height="40" rx="5" fill="#edcf72"/>
+  <text x="235" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#f9f6f2">128</text>
+  
+  <rect x="275" y="115" width="60" height="40" rx="5" fill="#edcc61"/>
+  <text x="305" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#f9f6f2">256</text>
+  
+  <rect x="65" y="165" width="60" height="40" rx="5" fill="#edc850"/>
+  <text x="95" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#f9f6f2">512</text>
+  
+  <rect x="135" y="165" width="60" height="40" rx="5" fill="#edc53f"/>
+  <text x="165" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#f9f6f2">1024</text>
+  
+  <rect x="205" y="165" width="60" height="40" rx="5" fill="#edc22e"/>
+  <text x="235" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#f9f6f2">2048</text>
+  
+  <!-- Title -->
+  <text x="200" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#776e65">2048</text>
+</svg> 
