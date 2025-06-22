@@ -13,6 +13,8 @@
     
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Classic HTML5 Games Collection - Features 2048, Snake, Tetris, Flappy Bird and more popular games">
     <meta name="keywords" content="HTML5 games,2048,Snake,Tetris,Flappy Bird,online games,free games">
@@ -81,6 +83,18 @@
     
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/main.css">
+    
+    <!-- Force correct content type -->
+    <script>
+        // Check if page is rendering correctly
+        document.addEventListener('DOMContentLoaded', function() {
+            // If the body is empty or the header is not visible, there might be a rendering issue
+            if (!document.querySelector('.main-header') && !sessionStorage.getItem('pageReloaded')) {
+                sessionStorage.setItem('pageReloaded', 'true');
+                window.location.reload(true);
+            }
+        });
+    </script>
 </head>
 <body>
     <!-- Loading overlay - temporarily disabled -->
