@@ -315,6 +315,11 @@
         document.addEventListener('keydown', function(e) {
             if (gameState !== 'playing') return;
             
+            // Prevent default behavior for game control keys
+            if (['ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp', ' '].includes(e.key)) {
+                e.preventDefault();
+            }
+            
             switch(e.key) {
                 case 'ArrowLeft':
                     if (canMove(currentPiece, -1, 0)) currentPiece.x--;
